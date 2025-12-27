@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import TodoStats from "./TodoStatus";
 import TodoForm from "./TodoForm";
 import TodoList from "./TodoList";
@@ -6,7 +6,19 @@ import {Todo} from "../types/todo";
 import exp from "constants";
 
 const TodoApp = () => {
-    const [todos, setTodos] = useState<Todo[]>([]);
+    // localStorage에서 데이터 호출
+    const [todos, setTodos] = useState<Todo[]>(()=>{
+        const saved = localStorage.getItem('todos');
+        if(saved){
+            return JSON.parse(saved);
+        }
+        return [];
+    });
+
+    // todo 리스트가 변경될 때마다 자동 저장
+    useEffect(()=>{
+        localStorage.setItem('todos', JSON.stringify(todos));
+    }, [todos]);
 
     const addTodo = (text : string) => {
         const newTodo : Todo = {
@@ -84,6 +96,19 @@ const TodoApp = () => {
                     </button>
                 )}
             </div>
+
+                <p
+                    style={{
+                        marginTop: '30px',
+                        textAlign : 'center',
+                        color: '#888',
+                        fontSize: '14px',
+                        borderTop: '1px solid #444',
+                        paddingTop: '20px'
+                    }}
+                >
+                    자동 저장 됨
+                </p>
         </div>
     );
 };
