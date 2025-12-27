@@ -1,11 +1,6 @@
 import React from "react";
+import {Todo} from "../types/todo";
 import TodoItem from "./todoItem";
-
-type Todo = {
-    id : number;
-    text: string;
-    completed: boolean;
-};
 
 type TodoListProps = {
     todos: Todo[];
