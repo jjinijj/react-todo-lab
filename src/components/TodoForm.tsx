@@ -39,7 +39,7 @@ const TodoForm = ({onAdd} : TodoFormProps) => {
                 }}
             >
                 <input
-                    ref={inputRef}
+                    ref={inputRef} // ref 추가
                     type="text"
                     value={inputText}
                     onChange={(e)=>setInputText(e.target.value)}    
