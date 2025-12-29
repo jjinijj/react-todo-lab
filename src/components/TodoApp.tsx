@@ -2,8 +2,7 @@ import React, { useEffect, useState } from "react";
 import TodoStats from "./TodoStatus";
 import TodoForm from "./TodoForm";
 import TodoList from "./TodoList";
-import {Todo} from "../types/todo";
-import exp from "constants";
+import type {Todo} from "../types/todo";
 
 const TodoApp = () => {
     // localStorage에서 데이터 호출
