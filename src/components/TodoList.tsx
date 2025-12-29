@@ -6,9 +6,10 @@ type TodoListProps = {
     todos: Todo[];
     onToggle: (id: number) => void;
     onDelete: (id:number) => void;
+    onEdit: (id:number, newText:string) => void;
 };
 
-const TodoList = ({todos, onToggle, onDelete} : TodoListProps) => {
+const TodoList = ({todos, onToggle, onDelete, onEdit} : TodoListProps) => {
     if(todos.length === 0){
         return (
             <p style= {{
@@ -35,6 +36,7 @@ const TodoList = ({todos, onToggle, onDelete} : TodoListProps) => {
                     completed={todo.completed}
                     onToggle={onToggle}
                     onDelete={onDelete}
+                    onEdit={onEdit}
                 />
             ))}
         </ul>
