@@ -1,4 +1,4 @@
-import React,{useState} from "react";
+import React,{useState, useEffect, useRef} from "react";
 
 type TodoFormProps ={
     onAdd: (text:string) => void;
@@ -6,6 +6,7 @@ type TodoFormProps ={
 
 const TodoForm = ({onAdd} : TodoFormProps) => {
     const [inputText, setInputText] = useState('');
+    const inputRef = useRef<HTMLInputElement>(null);
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
@@ -18,6 +19,11 @@ const TodoForm = ({onAdd} : TodoFormProps) => {
         onAdd(inputText);
         setInputText('');
     };
+
+    // 컴포넌트 마운트 시 자동 포커스
+    useEffect(()=>{
+        inputRef.current?.focus();
+    },[]);
 
     return(
         <form 
@@ -33,6 +39,7 @@ const TodoForm = ({onAdd} : TodoFormProps) => {
                 }}
             >
                 <input
+                    ref={inputRef}
                     type="text"
                     value={inputText}
                     onChange={(e)=>setInputText(e.target.value)}    
