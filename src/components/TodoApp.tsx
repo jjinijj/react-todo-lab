@@ -16,6 +16,7 @@ const TodoApp = () => {
     });
 
     const [filter, setFilter] = useState<FilterType>('all');
+    const [searchText, setSearchText] = useState('');
 
     // todo 리스트가 변경될 때마다 자동 저장
     useEffect(()=>{
@@ -47,8 +48,16 @@ const TodoApp = () => {
     };
 
     const filteredTodos = todos.filter(todo => {
+        
+        // 검색
+        if(searchText && !todo.text.toLowerCase().includes(searchText.toLowerCase())){
+            return false;
+        }
+        
+        // 필터 적용
         if(filter === 'active') return !todo.completed;
         if(filter === 'completed') return todo.completed;
+
         return true; // all
     });
 
@@ -82,7 +91,28 @@ const TodoApp = () => {
 
             <TodoForm onAdd={addTodo}/>
 
-            {/* 필터 버튼 추가 */}
+            {/*검색 창*/}
+            <div style={{
+                marginTop: '20px'
+            }}>
+                <input
+                    type="text"
+                    value={searchText}
+                    onChange={(e)=>setSearchText(e.target.value)}
+                    placeholder="검색"
+                    style={{
+                        width: '100%',
+                        padding: '12px',
+                        fontSize: '16px',
+                        borderRadius: '8px',
+                        border: '1px solid #444',
+                        backgroundColor: '#2e2e2e',
+                        color: 'white'
+                    }}
+                />
+            </div>
+
+            {/* 필터 버튼*/}
             <div style={{
                 display: 'flex',
                 gap:'10px',
@@ -135,6 +165,18 @@ const TodoApp = () => {
                 </button>
 
             </div>
+
+                {/*검색 결과 표시*/}
+                {searchText &&(
+                    <p style={{
+                        textAlign:'center',
+                        color: '#888',
+                        marginTop: '15px',
+                        fontSize: '14px'
+                    }}>
+                        "{searchText}" 검색 결과 : {filteredTodos.length}개
+                    </p>
+                )}
 
             <div style={{
                 marginTop: '30px'
