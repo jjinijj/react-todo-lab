@@ -3,6 +3,7 @@ import TodoStats from "./TodoStatus";
 import TodoForm from "./TodoForm";
 import TodoList from "./TodoList";
 import type {Todo} from "../types/todo";
+import type { FilterType } from "../types/filter";
 
 const TodoApp = () => {
     // localStorage에서 데이터 호출
@@ -13,6 +14,8 @@ const TodoApp = () => {
         }
         return [];
     });
+
+    const [filter, setFilter] = useState<FilterType>('all');
 
     // todo 리스트가 변경될 때마다 자동 저장
     useEffect(()=>{
@@ -42,6 +45,12 @@ const TodoApp = () => {
     const deleteAllCompleted = () => {
         setTodos(todos.filter(todo => !todo.completed));
     };
+
+    const filteredTodos = todos.filter(todo => {
+        if(filter === 'active') return !todo.completed;
+        if(filter === 'completed') return todo.completed;
+        return true; // all
+    });
 
     const totalCount = todos.length;
     const completedCount = todos.filter(todo => todo.completed).length;
@@ -73,11 +82,65 @@ const TodoApp = () => {
 
             <TodoForm onAdd={addTodo}/>
 
+            {/* 필터 버튼 추가 */}
+            <div style={{
+                display: 'flex',
+                gap:'10px',
+                marginTop: '30px',
+                justifyContent: 'center'
+            }}>
+                <button
+                    onClick={() => setFilter('all')}
+                    className="btn"
+                    style={{
+                        padding: '8px 20px',
+                        backgroundColor: filter === 'all' ? '#61dafb' : '#444',
+                        border: 'none',
+                        borderRadius: '6px',
+                        cursor: 'pointer',
+                        fontWeight: filter === 'all' ? 'bold' : 'normal'
+                    }}
+                >
+                    전체
+                </button>
+
+                <button
+                    onClick={() => setFilter('active')}
+                    className="btn"
+                    style={{
+                        padding: '8px 20px',
+                        backgroundColor: filter === 'active' ? '#ff9800' : '#444',
+                        border: 'none',
+                        borderRadius: '6px',
+                        cursor: 'pointer',
+                        fontWeight: filter === 'active' ? 'bold' : 'normal'
+                    }}
+                >
+                    진행중
+                </button>
+
+                <button
+                    onClick={() => setFilter('completed')}
+                    className="btn"
+                    style={{
+                        padding: '8px 20px',
+                        backgroundColor: filter === 'completed' ? '#4caf50' : '#444',
+                        border: 'none',
+                        borderRadius: '6px',
+                        cursor: 'pointer',
+                        fontWeight: filter === 'completed' ? 'bold' : 'normal'
+                    }}
+                >
+                    완료
+                </button>
+
+            </div>
+
             <div style={{
                 marginTop: '30px'
             }}>
                 <TodoList
-                    todos={todos}
+                    todos={filteredTodos}
                     onToggle={toggleTodo}
                     onDelete={deleteTodo}
                 />
